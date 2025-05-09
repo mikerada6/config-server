@@ -1,0 +1,282 @@
+# General OS files
+#-------------------------------------------------------------------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+# KDE directory preferences
+.directory
+# Linux trash folder which might appear on external disk
+.Trash-*
+
+
+# IDE specific files
+#-------------------------------------------------------------------------------
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+gen/ # Android specific, but sometimes used by IntelliJ for other generated sources
+# JetBrains Rider
+#.idea.SolutionCaches/ # Rider specific
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Eclipse (often used with Java/Spring Boot)
+.project
+.classpath
+.settings/
+target/ # Also covered by Maven, but good to have here too
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+.nb-gradle/
+
+
+# Build tools & Dependency Management
+#-------------------------------------------------------------------------------
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+# .mvn/wrapper/maven-wrapper.jar # Consider if you want to commit the wrapper jar
+
+# Gradle (often used with Java/Spring Boot/Android)
+.gradle
+build/
+# !gradle/wrapper/gradle-wrapper.jar # Consider if you want to commit the wrapper jar
+
+# Node / Angular
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json # If you use npm and want to share exact dependencies, commit this. Otherwise, ignore.
+# yarn.lock # If you use yarn and want to share exact dependencies, commit this. Otherwise, ignore.
+*.tgz
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so # C extensions
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+
+# Language & Framework Specific
+#-------------------------------------------------------------------------------
+# Java / Spring Boot
+# Logs
+*.log
+logs/
+# PID files
+*.pid
+*.seed
+# Java crash files
+hs_err_pid*
+replay_pid*
+# Compiled binary files
+*.jar
+*.war
+*.ear
+*.nar
+
+# Angular
+dist/
+tmp/
+.angular/cache/
+coverage/
+# Nx specific (if you use Nx for Angular monorepos)
+# .nx/
+
+# Python
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+# Usually these files are written by a python script from a template
+# before PyInstaller builds the exe, so as to inject date/other infos into it.
+# *.manifest
+# *.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+pytestdebug.log
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak
+venv.bak
+
+# Sass
+.sass-cache/
+*.css.map
+
+# Miscellaneous
+#-------------------------------------------------------------------------------
+# Local configuration files (sensitive information)
+local.properties
+*.local
+secrets.*
+*.env.local
+*.env.*.local
+!*.env.example
+!*.env.sample
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+*.orig
+
+# Compressed files (if they are build artifacts or large data)
+# *.zip
+# *.tar.gz
+# *.rar
+
+# Large media files (if not part of the source code)
+# *.mp4
+# *.mov
+# *.avi
+# *.psd
+# *.ai
+
+# Editor directories and files
+#-------------------------------------------------------------------------------
+# TextMate
+*.tmproj
+*.tmproject
+*.tmbundle
+*.tmCommand
+*.tmDragCommand
+*.tmSnippet
+*.tmLanguage
+*.tmPreferences
+*.tmTheme
+
+# SublimeText
+*.sublime-project
+*.sublime-workspace
+
+# Atom
+.atom/
+
+# Ctags
+.tags
+tags
+
+# Cscope
+cscope.*
+
+# Doxygen documentation
+Doxyfile.bak

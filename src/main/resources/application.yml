@@ -1,0 +1,53 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+
+  profiles:
+    active: composite
+
+  autoconfigure:
+    exclude:
+      - org.springframework.cloud.config.server.config.ConfigServerSecurityAutoConfiguration
+
+  cloud:                          # ← moved up one level
+    config:
+      server:
+        composite:
+          - type: vault
+            order: 1
+            backend: secret
+            default-context: application
+            profile-separator: '/'
+            kv-version: 2
+            host: 192.168.86.250     # ← specify Vault host here
+            port: 8200              # ← and port here
+            scheme: http
+            authentication: TOKEN
+            token: ${VAULT_TOKEN}
+          - type: git
+            order: 2
+            uri: https://github.com/mikerada6/config-repo
+            searchPaths:
+              - '{application}/{profile}' # Looks in a folder named after the app, then a subfolder for the profile
+              - '{application}'           # Looks in a folder named after the application
+              - '.'
+
+        vault:
+          host: 192.168.86.250      # ← now binds correctly
+          port: 8200
+          scheme: http
+          backend: secret/config
+          default-context: application
+          profile-separator: '/'
+          kv-version: 2
+          authentication: TOKEN
+          token: ${VAULT_TOKEN}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
