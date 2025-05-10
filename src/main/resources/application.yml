@@ -50,4 +50,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: '*'
+        include: health,info,prometheus # Be selective in production
+  metrics:
+    tags: # Add common tags to all metrics
+      application: ${spring.application.name}

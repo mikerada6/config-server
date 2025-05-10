@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Import Spring Boot's default configurations -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!-- Define properties from Spring application properties -->
+    <springProperty scope="context" name="APP_NAME" source="spring.application.name" defaultValue="config-server"/>
+    <springProperty scope="context" name="LOG_PATH" source="logging.file.path" defaultValue="./logs"/>
+    <springProperty scope="context" name="LOKI_URL" source="logging.loki.url" defaultValue="http://192.168.86.250:3100/loki/api/v1/push"/>
+    <springProfile name="default">
+        <property name="ACTIVE_PROFILE" value="default"/>
+    </springProfile>
+    <springProfile name="dev">
+        <property name="ACTIVE_PROFILE" value="dev"/>
+    </springProfile>
+    <springProfile name="prod">
+        <property name="ACTIVE_PROFILE" value="prod"/>
+    </springProfile>
+    <!-- Add other profiles as needed -->
+
+
+    <!-- Common pattern for console and file logs -->
+    <property name="COMMON_LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%15.15t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+
+    <!-- Appender for Console Logging -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${COMMON_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <!-- Appender for Rolling File Logging -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${APP_NAME}.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${COMMON_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${APP_NAME}.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>30</maxHistory> <!-- Keep logs for 30 days -->
+            <totalSizeCap>1GB</totalSizeCap> <!-- Total size of all archive files -->
+        </rollingPolicy>
+    </appender>
+
+    <!-- Appender for Loki -->
+    <appender name="LOKI" class="com.github.loki4j.logback.Loki4jAppender">
+        <http class="com.github.loki4j.logback.ApacheHttpSender">
+            <url>${LOKI_URL}</url>
+            <!-- Add authentication if your Loki instance requires it
+            <basicAuth class="com.github.loki4j.logback.ApacheHttpSender$BasicAuth">
+                <username>your-loki-user</username>
+                <password>your-loki-password</password>
+            </basicAuth>
+            -->
+        </http>
+        <format>
+            <label>
+                <pattern>app=${APP_NAME},host=${HOSTNAME},profile=${ACTIVE_PROFILE},level=%level</pattern>
+                <!-- You can add more static or dynamic labels here -->
+                <!-- <readMarkers>true</readMarkers> --> <!-- To include MDC markers as labels -->
+            </label>
+            <message>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %logger{39} - %msg</pattern>
+            </message>
+            <sortByTime>true</sortByTime> <!-- Recommended for Loki -->
+        </format>
+        <batchMaxItems>1000</batchMaxItems>
+        <batchMaxWaitMs>5000</batchMaxWaitMs> <!-- 5 seconds -->
+        <batchTimeoutMs>60000</batchTimeoutMs> <!-- 60 seconds for HTTP request -->
+        <verbose>false</verbose> <!-- Set to true to debug the appender itself -->
+    </appender>
+
+    <!-- Default Log Levels -->
+    <logger name="org.springframework.cloud.config.server" level="INFO"/>
+    <logger name="org.springframework.vault" level="INFO"/> <!-- Can be noisy at DEBUG -->
+    <logger name="org.eclipse.jgit" level="INFO"/>     <!-- Can be very noisy at DEBUG -->
+    <logger name="com.github.loki4j" level="WARN"/> <!-- To see warnings/errors from the Loki appender itself -->
+
+    <!-- Your application's specific logs -->
+    <logger name="org.rezatron.config_server" level="DEBUG"/> <!-- Or INFO for production -->
+
+
+    <!-- Root Logger Configuration -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="LOKI"/>
+    </root>
+
+    <!-- Example: Different logging for 'dev' profile -->
+    <springProfile name="dev">
+        <logger name="org.rezatron.config_server" level="DEBUG"/>
+        <logger name="org.springframework.cloud.config.server" level="DEBUG"/>
+        <root level="DEBUG">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+            <appender-ref ref="LOKI"/>
+        </root>
+    </springProfile>
+
+    <!-- Example: Less console logging in 'prod' profile (assuming Loki is primary) -->
+    <springProfile name="prod">
+        <logger name="org.rezatron.config_server" level="INFO"/>
+        <logger name="org.springframework.cloud.config.server" level="INFO"/>
+        <root level="INFO">
+            <!-- <appender-ref ref="CONSOLE"/> --> <!-- Optionally remove console in prod if Loki/File is sufficient -->
+            <appender-ref ref="FILE"/>
+            <appender-ref ref="LOKI"/>
+        </root>
+    </springProfile>
+
+</configuration>
