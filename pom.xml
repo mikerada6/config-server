@@ -77,7 +77,18 @@
 		</dependencies>
 	</dependencyManagement>
 
-
+	<distributionManagement>
+		<repository>
+			<id>artifactory</id> <!-- must match your settings.xml server id -->
+			<name>Artifactory Release Repository</name>
+			<url>https://frog.rezatron.org/artifactory/libs-release-local</url>
+		</repository>
+		<snapshotRepository>
+			<id>artifactory</id> <!-- must match your settings.xml server id -->
+			<name>Artifactory Snapshot Repository</name>
+			<url>https://frog.rezatron.org/artifactory/libs-snapshot-local</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 	<build>
 		<plugins>
