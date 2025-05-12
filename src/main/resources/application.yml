@@ -5,6 +5,10 @@ spring:
   application:
     name: config-server
 
+logging:
+  file:
+    path: /var/log/configsrv # <--- SET THE ABSOLUTE PATH HERE
+
   profiles:
     active: composite
 
